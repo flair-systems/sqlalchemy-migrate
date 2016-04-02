@@ -216,13 +216,13 @@ class ModelGenerator(object):
                     'post_meta.tables[%r].columns[%r].create()' % (tn, col))
                 downgradeCommands.append(
                     'post_meta.tables[%r].columns[%r].drop()' % (tn, col))
-            for modelCol, databaseCol, modelDecl, databaseDecl in td.columns_different:
+            for _,col_diff in td.columns_different.items():
                 upgradeCommands.append(
                     'assert False, "Can\'t alter columns: %s:%s=>%s"' % (
-                    tn, modelCol.name, databaseCol.name))
+                    tn, col_diff.col_A.name, col_diff.col_B.name))
                 downgradeCommands.append(
                     'assert False, "Can\'t alter columns: %s:%s=>%s"' % (
-                    tn, modelCol.name, databaseCol.name))
+                    tn, col_diff.col_A.name, col_diff.col_B.name))
 
         return (
             '\n'.join(decls),
